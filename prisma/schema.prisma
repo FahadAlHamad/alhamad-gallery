@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Painting {
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique
+  title       String
+  artist      String
+  year        String
+  medium      String
+  dimensions  String
+  description String
+  category    String
+  price       String    @default("")
+  sold        Boolean   @default(false)
+  featured    Boolean   @default(false)
+  imageUrl    String
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  enquiries   Enquiry[]
+}
+
+model Enquiry {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String
+  phone      String   @default("")
+  message    String
+  paintingId Int?
+  painting   Painting? @relation(fields: [paintingId], references: [id])
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model AdminUser {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
