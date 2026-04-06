@@ -40,21 +40,6 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Admin Panel
-
-Access the admin panel at [http://localhost:3000/admin](http://localhost:3000/admin).
-
-**Default credentials:**
-- Email: `admin@alhamadgallery.com`
-- Password: `alhamad2024`
-
-### Admin features:
-- View, edit, and delete paintings
-- Upload new painting images
-- Toggle featured/sold status
-- View and manage enquiries
-- Change admin password
-
 ## Email Notifications
 
 Configure SMTP settings in `.env` to receive email notifications when enquiry forms are submitted. If SMTP is not configured, enquiries are saved to the database only.
