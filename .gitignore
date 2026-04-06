@@ -51,3 +51,6 @@ next-env.d.ts
 
 # Prisma generated client (regenerated on install)
 /src/generated/prisma
+
+# Claude Code local session permissions (may contain tokens)
+.claude/settings.local.json
