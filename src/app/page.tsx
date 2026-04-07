@@ -55,13 +55,7 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* Scroll hint */}
-        <div className="anim-hero-cta absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
-          <span className="font-body text-[9px] tracking-widest2 uppercase text-ink">Scroll</span>
-          <svg className="w-px h-8 text-ink" viewBox="0 0 1 32" fill="none" stroke="currentColor" strokeWidth={1}>
-            <line x1="0.5" y1="0" x2="0.5" y2="32" />
-          </svg>
-        </div>
+
       </section>
 
       {/* ── Marquee strip ────────────────────────────────────── */}
