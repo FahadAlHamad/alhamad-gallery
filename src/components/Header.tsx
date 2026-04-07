@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
@@ -15,7 +16,6 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => { setMenuOpen(false); }, [pathname]);
 
   const navLinks = [
@@ -35,14 +35,18 @@ export default function Header() {
         }
       `}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-10 h-[68px] flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 h-[100px] flex items-center justify-between">
 
         {/* Logo */}
-        <Link
-          href="/"
-          className="font-heading italic font-light text-[1.45rem] tracking-wide text-ink hover:text-accent transition-colors duration-300"
-        >
-          Alhamad Gallery
+        <Link href="/" className="flex items-center hover:opacity-75 transition-opacity duration-300">
+          <Image
+            src="/images/logo.png"
+            alt="Alhamad Gallery"
+            width={80}
+            height={80}
+            className="object-contain"
+            priority
+          />
         </Link>
 
         {/* Desktop nav */}

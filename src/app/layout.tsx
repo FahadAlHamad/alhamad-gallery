@@ -8,6 +8,10 @@ export const metadata: Metadata = {
   title: "Alhamad Gallery — 19th Century Orientalist Paintings",
   description:
     "A private gallery specialising in exceptional 19th-century Orientalist paintings. Discover museum-quality works by European and Continental masters.",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

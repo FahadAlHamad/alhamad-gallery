@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -9,11 +10,14 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
 
           {/* Left: brand */}
-          <Link
-            href="/"
-            className="font-heading italic font-light text-2xl text-cream/90 hover:text-cream transition-colors duration-300"
-          >
-            Alhamad Gallery
+          <Link href="/" className="flex items-center hover:opacity-75 transition-opacity duration-300">
+            <Image
+              src="/images/logo.png"
+              alt="Alhamad Gallery"
+              width={120}
+              height={120}
+              className="object-contain"
+            />
           </Link>
 
           {/* Centre: nav */}
