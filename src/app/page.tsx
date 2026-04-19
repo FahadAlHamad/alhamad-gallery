@@ -3,6 +3,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import FadeInSection from "@/components/FadeInSection";
 import MobileHomeHero from "@/components/MobileHomeHero";
+import HorizontalScrollStrip from "@/components/HorizontalScrollStrip";
 
 export const dynamic = "force-dynamic";
 
@@ -111,7 +112,7 @@ export default async function HomePage() {
           </div>
         </FadeInSection>
 
-        <div className="flex gap-3 overflow-x-auto overflow-y-hidden no-scrollbar touch-pan-x px-6 pt-1 pb-1">
+        <HorizontalScrollStrip className="gap-3 px-6 pt-1 pb-1">
           {featured.map((painting, i) => (
             <FadeInSection key={painting.id} delay={i * 80}>
               <Link
@@ -146,7 +147,7 @@ export default async function HomePage() {
           ))}
           {/* trailing spacer so last card has breathing room when scrolled */}
           <div className="shrink-0 w-2" aria-hidden />
-        </div>
+        </HorizontalScrollStrip>
       </section>
 
       {/* Desktop: grid layout (unchanged) */}
