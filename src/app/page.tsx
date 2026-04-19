@@ -111,7 +111,7 @@ export default async function HomePage() {
           </div>
         </FadeInSection>
 
-        <div className="flex gap-3 overflow-x-auto no-scrollbar px-6 pt-1 pb-1">
+        <div className="flex gap-3 overflow-x-auto overflow-y-hidden no-scrollbar touch-pan-x px-6 pt-1 pb-1">
           {featured.map((painting, i) => (
             <FadeInSection key={painting.id} delay={i * 80}>
               <Link
