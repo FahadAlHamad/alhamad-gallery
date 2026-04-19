@@ -9,8 +9,8 @@ datasource db {
 }
 
 model Painting {
-  id          Int       @id @default(autoincrement())
-  slug        String    @unique
+  id          Int             @id @default(autoincrement())
+  slug        String          @unique
   title       String
   artist      String
   year        String
@@ -18,14 +18,25 @@ model Painting {
   dimensions  String
   description String
   category    String
-  price       String    @default("")
-  sold        Boolean   @default(false)
-  featured    Boolean   @default(false)
+  price       String          @default("")
+  sold        Boolean         @default(false)
+  featured    Boolean         @default(false)
   imageUrl    String
-  sortOrder   Int       @default(0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  sortOrder   Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
   enquiries   Enquiry[]
+  images      PaintingImage[]
+}
+
+model PaintingImage {
+  id         Int      @id @default(autoincrement())
+  paintingId Int
+  painting   Painting @relation(fields: [paintingId], references: [id], onDelete: Cascade)
+  url        String
+  caption    String?
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
 }
 
 model Enquiry {

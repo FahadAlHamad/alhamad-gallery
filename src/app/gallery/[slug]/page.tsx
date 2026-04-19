@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import PaintingImageGallery from "@/components/PaintingImageGallery";
 
 export const dynamic = "force-dynamic";
 
@@ -11,8 +12,20 @@ export default async function PaintingDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const painting = await prisma.painting.findUnique({ where: { slug } });
+  const painting = await prisma.painting.findUnique({
+    where: { slug },
+    include: {
+      images: { orderBy: { sortOrder: "asc" } },
+    },
+  });
   if (!painting) notFound();
+
+  // If the painting has curated extra images, use them; otherwise fall back
+  // to the single primary imageUrl so the page always works.
+  const galleryImages =
+    painting.images.length > 0
+      ? painting.images.map((img) => ({ url: img.url, caption: img.caption }))
+      : [{ url: painting.imageUrl, caption: null }];
 
   // Mobile detail rows (no price — per design decision, users enquire for price)
   const mobileDetails = [
@@ -44,19 +57,11 @@ export default async function PaintingDetailPage({
       {/* MOBILE LAYOUT                                            */}
       {/* ═══════════════════════════════════════════════════════ */}
       <div className="md:hidden pt-14">
-        {/* Painting image — natural aspect ratio, no cropping */}
-        <div className="relative w-full bg-ink/5 anim-detail-reveal">
-          <Image
-            src={painting.imageUrl}
-            alt={painting.title}
-            width={1200}
-            height={1600}
-            priority
-            sizes="100vw"
-            className="block w-full h-auto"
-          />
+        {/* Painting gallery — swipe carousel on mobile */}
+        <div className="relative">
+          <PaintingImageGallery images={galleryImages} title={painting.title} />
           {painting.sold && (
-            <div className="absolute top-3.5 left-3.5 font-body text-[8px] tracking-widest2 uppercase bg-ink/80 text-cream/70 px-2 py-1">
+            <div className="absolute top-3.5 left-3.5 font-body text-[8px] tracking-widest2 uppercase bg-ink/80 text-cream/70 px-2 py-1 z-10">
               Sold
             </div>
           )}
@@ -131,15 +136,14 @@ export default async function PaintingDetailPage({
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-20 xl:gap-28">
 
-            <div className="aspect-[3/4] relative overflow-hidden bg-ink/5">
-              <Image
-                src={painting.imageUrl}
-                alt={painting.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-              />
+            {/* Painting gallery — main + thumbnails on desktop */}
+            <div className="relative">
+              <PaintingImageGallery images={galleryImages} title={painting.title} />
+              {painting.sold && (
+                <div className="absolute top-3.5 left-3.5 font-body text-[9px] tracking-widest2 uppercase bg-ink/80 text-cream/70 px-3 py-1.5 z-10">
+                  Sold
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col justify-center lg:py-8">
