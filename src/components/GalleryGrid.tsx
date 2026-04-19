@@ -86,12 +86,12 @@ export default function GalleryGrid({
                     className="object-cover"
                     sizes="100vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink/62 via-ink/10 to-transparent pointer-events-none" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <p className="font-heading text-[17px] font-light leading-tight text-cream">
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/30 to-transparent pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <p className="text-on-image font-heading text-[20px] font-light leading-tight text-cream">
                       {painting.title}
                     </p>
-                    <span className="inline-block mt-1.5 font-body text-[9px] tracking-widest2 uppercase text-cream/55">
+                    <span className="text-on-image-sm inline-block mt-2 font-body text-[10px] tracking-widest2 uppercase text-cream/80">
                       {painting.artist} · {painting.year}
                     </span>
                   </div>
@@ -143,13 +143,13 @@ export default function GalleryGrid({
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink/65 via-ink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-350" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-350" />
 
                   <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out">
-                    <p className="font-heading text-lg font-light text-cream leading-snug">
+                    <p className="text-on-image font-heading text-xl font-light text-cream leading-snug">
                       {painting.title}
                     </p>
-                    <span className="font-body text-[10px] tracking-widest2 uppercase text-cream/60 mt-1.5 inline-block">
+                    <span className="text-on-image-sm font-body text-[10px] tracking-widest2 uppercase text-cream mt-2 inline-block">
                       Enquire →
                     </span>
                   </div>
@@ -162,10 +162,10 @@ export default function GalleryGrid({
                 </div>
 
                 <div className="mt-4 px-0.5">
-                  <h3 className="font-heading text-[1.15rem] font-light leading-snug group-hover:text-accent transition-colors duration-200">
+                  <h3 className="font-heading text-[1.2rem] font-light leading-snug group-hover:text-accent transition-colors duration-200">
                     {painting.title}
                   </h3>
-                  <p className="font-body text-[11px] tracking-wide text-secondary mt-1.5">
+                  <p className="font-body text-[12px] tracking-wide text-ink/55 mt-1.5">
                     {painting.artist} &nbsp;·&nbsp; {painting.year}
                   </p>
                 </div>

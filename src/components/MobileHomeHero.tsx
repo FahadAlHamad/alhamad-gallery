@@ -50,13 +50,13 @@ export default function MobileHomeHero({ imageUrl, alt = "" }: Props) {
       {/* Hero text */}
       <div className="absolute bottom-11 left-7 right-7">
         <p
-          className="font-body text-[9px] tracking-widest3 uppercase text-cream/40 mb-3.5"
+          className="text-on-image-sm font-body text-[10px] tracking-widest3 uppercase text-cream/65 mb-3.5"
           style={{ animation: "fadeInUp 900ms cubic-bezier(0.16,1,0.3,1) 0.35s both" }}
         >
           Private Collection &nbsp;·&nbsp; Est. 19th Century
         </p>
         <h1
-          className="font-heading font-light text-[72px] leading-[0.9] tracking-tight text-cream mb-7"
+          className="text-on-image font-heading font-light text-[72px] leading-[0.9] tracking-tight text-cream mb-7"
           style={{ animation: "fadeInUp 900ms cubic-bezier(0.16,1,0.3,1) 0.1s both" }}
         >
           Alhamad
@@ -65,7 +65,7 @@ export default function MobileHomeHero({ imageUrl, alt = "" }: Props) {
         </h1>
         <Link
           href="/gallery"
-          className="inline-block font-body text-[10px] tracking-widest2 uppercase text-cream/80 border-b border-cream/25 pb-[3px]"
+          className="text-on-image-sm inline-block font-body text-[11px] tracking-widest2 uppercase text-cream border-b border-cream/40 pb-[3px]"
           style={{ animation: "fadeInUp 900ms cubic-bezier(0.16,1,0.3,1) 0.5s both" }}
         >
           View the Collection →

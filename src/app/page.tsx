@@ -126,12 +126,12 @@ export default async function HomePage() {
                     className="object-cover"
                     sizes="195px"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-ink/10 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/30 to-transparent pointer-events-none" />
                   <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <p className="font-heading text-[17px] font-light leading-tight text-cream">
+                    <p className="text-on-image font-heading text-[18px] font-light leading-tight text-cream">
                       {painting.title}
                     </p>
-                    <span className="inline-block mt-1.5 font-body text-[9px] tracking-widest2 uppercase text-cream/55">
+                    <span className="text-on-image-sm inline-block mt-2 font-body text-[10px] tracking-widest2 uppercase text-cream/85">
                       {painting.artist} · {painting.year}
                     </span>
                   </div>
@@ -177,21 +177,21 @@ export default async function HomePage() {
                     className="object-cover scale-100 group-hover:scale-[1.04] transition-transform duration-700 ease-out"
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink/65 via-ink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-3 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-350 ease-out">
-                    <p className="font-heading text-xl font-light text-cream leading-snug">
+                    <p className="text-on-image font-heading text-xl font-light text-cream leading-snug">
                       {painting.title}
                     </p>
-                    <span className="font-body text-[10px] tracking-widest2 uppercase text-cream/60 mt-2 inline-block">
+                    <span className="text-on-image-sm font-body text-[10px] tracking-widest2 uppercase text-cream mt-2 inline-block">
                       Enquire →
                     </span>
                   </div>
                 </div>
                 <div className="mt-5">
-                  <h3 className="font-heading text-[1.2rem] font-light group-hover:text-accent transition-colors duration-200">
+                  <h3 className="font-heading text-[1.25rem] font-light group-hover:text-accent transition-colors duration-200">
                     {painting.title}
                   </h3>
-                  <p className="font-body text-[11px] tracking-wide text-secondary mt-1.5">
+                  <p className="font-body text-[12px] tracking-wide text-ink/55 mt-1.5">
                     {painting.artist} &nbsp;·&nbsp; {painting.year}
                   </p>
                 </div>

@@ -92,6 +92,14 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(0);
 }
 
+/* ─── Text on image — shadow for legibility ─────────────── */
+.text-on-image {
+  text-shadow: 0 1px 4px rgba(26,23,20,0.55), 0 2px 12px rgba(26,23,20,0.35);
+}
+.text-on-image-sm {
+  text-shadow: 0 1px 3px rgba(26,23,20,0.65);
+}
+
 /* ─── No scrollbar (for horizontal scroll strips) ────────── */
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; width: 0; height: 0; }
