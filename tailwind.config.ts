@@ -17,8 +17,8 @@ const config: Config = {
         border:   "#c9c4bc",
       },
       fontFamily: {
-        heading: ["Cormorant Garamond", "Georgia", "serif"],
-        body:    ["Jost", "system-ui", "sans-serif"],
+        heading: ["var(--font-heading)", "Georgia", "serif"],
+        body:    ["var(--font-body)", "system-ui", "sans-serif"],
       },
       letterSpacing: {
         widest2: "0.2em",
