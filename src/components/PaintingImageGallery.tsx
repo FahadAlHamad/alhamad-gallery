@@ -11,10 +11,17 @@ interface GalleryImage {
 // ─── Single image fallback (no gallery needed) ────────────────────
 function SingleImage({ image, title }: { image: GalleryImage; title: string }) {
   return (
-    <div className="relative w-full bg-ink/5 anim-detail-reveal">
-      <Image src={image.url} alt={title} width={1200} height={1600}
-        priority sizes="(max-width:768px) 100vw, 50vw"
-        className="block w-full h-auto md:aspect-[3/4] md:object-cover" />
+    // aspect-[3/4] gives a consistent frame; object-contain means the full
+    // painting is always visible regardless of its actual proportions.
+    <div className="relative w-full aspect-[3/4] bg-ink/5 anim-detail-reveal">
+      <Image
+        src={image.url}
+        alt={title}
+        fill
+        priority
+        sizes="(max-width:768px) 100vw, 50vw"
+        className="object-contain"
+      />
     </div>
   );
 }
@@ -35,7 +42,7 @@ export default function PaintingImageGallery({
   const touchStartY  = useRef(0);
   const touchDeltaX  = useRef(0);
   const swipeDir     = useRef<"h" | "v" | null>(null);
-  const [liveOffset, setLiveOffset] = useState(0); // px offset while dragging
+  const [liveOffset, setLiveOffset] = useState(0);
   const [snapping,  setSnapping]   = useState(false);
 
   const total = images.length;
@@ -101,16 +108,17 @@ export default function PaintingImageGallery({
           ══════════════════════════════════════════════════════ */}
       <div className="md:hidden relative w-full select-none">
 
-        {/* Clipping window */}
+        {/* Clipping window — aspect-[3/4] locks every slide to the same
+            height so there is no blank space when images have mixed ratios */}
         <div
-          className="overflow-hidden w-full bg-ink/5"
+          className="overflow-hidden w-full bg-ink/5 aspect-[3/4]"
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         >
           {/* Slide track */}
           <div
-            className="flex"
+            className="flex h-full"
             style={{
               transform: `translateX(calc(${-current * 100}% + ${liveOffset}px))`,
               transition: snapping
@@ -119,15 +127,16 @@ export default function PaintingImageGallery({
             }}
           >
             {images.map((img, i) => (
-              <div key={i} className="shrink-0 w-full relative">
+              // Each slide is exactly the same size as the clipping window;
+              // object-contain shows the full painting without cropping.
+              <div key={i} className="shrink-0 w-full h-full relative">
                 <Image
                   src={img.url}
                   alt={img.caption ?? title}
-                  width={1200}
-                  height={1600}
+                  fill
                   priority={i === 0}
                   sizes="100vw"
-                  className="block w-full h-auto"
+                  className="object-contain"
                   draggable={false}
                 />
               </div>
@@ -172,7 +181,8 @@ export default function PaintingImageGallery({
           ══════════════════════════════════════════════════════ */}
       <div className="hidden md:flex flex-col gap-4">
 
-        {/* Main image with crossfade */}
+        {/* Main image with crossfade.
+            object-contain instead of object-cover so no painting is cropped. */}
         <div className="relative aspect-[3/4] overflow-hidden bg-ink/5 group">
           {images.map((img, i) => (
             <div
@@ -186,7 +196,7 @@ export default function PaintingImageGallery({
                 fill
                 sizes="50vw"
                 priority={i === 0}
-                className="object-cover"
+                className="object-contain"
                 style={{ animation: i === current ? "detailReveal 600ms cubic-bezier(0.16,1,0.3,1) both" : "none" }}
               />
             </div>
@@ -222,13 +232,13 @@ export default function PaintingImageGallery({
           </div>
         </div>
 
-        {/* Thumbnail strip */}
+        {/* Thumbnail strip — object-contain keeps thumbs honest too */}
         <div className="flex gap-2.5">
           {images.map((img, i) => (
             <button
               key={i}
               onClick={() => goTo(i)}
-              className="relative shrink-0 overflow-hidden transition-all duration-200"
+              className="relative shrink-0 overflow-hidden transition-all duration-200 bg-ink/5"
               style={{
                 width: 64,
                 aspectRatio: "3/4",
@@ -244,7 +254,7 @@ export default function PaintingImageGallery({
                 alt={img.caption ?? title}
                 fill
                 sizes="64px"
-                className="object-cover transition-transform duration-300 hover:scale-105"
+                className="object-contain transition-transform duration-300 hover:scale-105"
               />
               {/* Caption overlay on thumbnail */}
               {img.caption && (
