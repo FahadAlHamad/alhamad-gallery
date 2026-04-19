@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin-auth";
-import { writeFile } from "fs/promises";
-import path from "path";
+import { put } from "@vercel/blob";
 
 function slugify(text: string): string {
   return text
@@ -26,33 +25,34 @@ export async function POST(req: NextRequest) {
   if (error) return error;
 
   const formData = await req.formData();
-  const title = formData.get("title") as string;
-  const artist = formData.get("artist") as string;
-  const year = formData.get("year") as string;
-  const medium = formData.get("medium") as string;
-  const dimensions = formData.get("dimensions") as string;
+  const title       = formData.get("title")       as string;
+  const artist      = formData.get("artist")      as string;
+  const year        = formData.get("year")        as string;
+  const medium      = formData.get("medium")      as string;
+  const dimensions  = formData.get("dimensions")  as string;
   const description = formData.get("description") as string;
-  const category = formData.get("category") as string;
-  const price = (formData.get("price") as string) || "";
-  const sold = formData.get("sold") === "true";
-  const featured = formData.get("featured") === "true";
-  const sortOrder = parseInt(formData.get("sortOrder") as string) || 0;
-  const image = formData.get("image") as File;
+  const category    = formData.get("category")    as string;
+  const price       = (formData.get("price")      as string) || "";
+  const sold        = formData.get("sold")        === "true";
+  const featured    = formData.get("featured")    === "true";
+  const sortOrder   = parseInt(formData.get("sortOrder") as string) || 0;
+  const image       = formData.get("image")       as File | null;
 
-  if (!image) {
+  if (!image || image.size === 0) {
     return NextResponse.json({ error: "Image required" }, { status: 400 });
   }
 
-  const ext = path.extname(image.name) || ".jpg";
-  const filename = `${slugify(title)}-${Date.now()}${ext}`;
-  const buffer = Buffer.from(await image.arrayBuffer());
-  const uploadPath = path.join(process.cwd(), "public/images/paintings", filename);
-  await writeFile(uploadPath, buffer);
-
   const slug = slugify(title);
-  let uniqueSlug = slug;
   const existing = await prisma.painting.findUnique({ where: { slug } });
-  if (existing) uniqueSlug = `${slug}-${Date.now()}`;
+  const uniqueSlug = existing ? `${slug}-${Date.now()}` : slug;
+
+  // Upload to Vercel Blob (persists across deployments)
+  const ext = image.name.split(".").pop() ?? "jpg";
+  const { url: imageUrl } = await put(
+    `paintings/${uniqueSlug}-${Date.now()}.${ext}`,
+    image,
+    { access: "public" },
+  );
 
   const painting = await prisma.painting.create({
     data: {
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
       price,
       sold,
       featured,
-      imageUrl: `/images/paintings/${filename}`,
+      imageUrl,
       sortOrder,
     },
   });

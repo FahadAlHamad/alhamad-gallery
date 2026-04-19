@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin-auth";
-import { writeFile } from "fs/promises";
-import path from "path";
+import { put } from "@vercel/blob";
 
 function slugify(text: string): string {
   return text
@@ -13,7 +12,10 @@ function slugify(text: string): string {
     .trim();
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   const { error } = await requireAdmin();
   if (error) return error;
 
@@ -22,27 +24,29 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   const formData = await req.formData();
 
   const data: Record<string, unknown> = {
-    title: formData.get("title") as string,
-    artist: formData.get("artist") as string,
-    year: formData.get("year") as string,
-    medium: formData.get("medium") as string,
-    dimensions: formData.get("dimensions") as string,
+    title:       formData.get("title")       as string,
+    artist:      formData.get("artist")      as string,
+    year:        formData.get("year")        as string,
+    medium:      formData.get("medium")      as string,
+    dimensions:  formData.get("dimensions")  as string,
     description: formData.get("description") as string,
-    category: formData.get("category") as string,
-    price: (formData.get("price") as string) || "",
-    sold: formData.get("sold") === "true",
-    featured: formData.get("featured") === "true",
-    sortOrder: parseInt(formData.get("sortOrder") as string) || 0,
+    category:    formData.get("category")    as string,
+    price:      (formData.get("price")       as string) || "",
+    sold:        formData.get("sold")        === "true",
+    featured:    formData.get("featured")    === "true",
+    sortOrder:   parseInt(formData.get("sortOrder") as string) || 0,
   };
 
   const image = formData.get("image") as File | null;
   if (image && image.size > 0) {
-    const ext = path.extname(image.name) || ".jpg";
-    const filename = `${slugify(data.title as string)}-${Date.now()}${ext}`;
-    const buffer = Buffer.from(await image.arrayBuffer());
-    const uploadPath = path.join(process.cwd(), "public/images/paintings", filename);
-    await writeFile(uploadPath, buffer);
-    data.imageUrl = `/images/paintings/${filename}`;
+    const slug = slugify(data.title as string);
+    const ext = image.name.split(".").pop() ?? "jpg";
+    const { url: imageUrl } = await put(
+      `paintings/${slug}-${Date.now()}.${ext}`,
+      image,
+      { access: "public" },
+    );
+    data.imageUrl = imageUrl;
   }
 
   const painting = await prisma.painting.update({
@@ -53,7 +57,10 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   return NextResponse.json(painting);
 }
 
-export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   const { error } = await requireAdmin();
   if (error) return error;
 
