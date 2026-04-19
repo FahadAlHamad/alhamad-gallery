@@ -8,15 +8,15 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="pt-32 pb-32">
+    <div className="pt-[88px] md:pt-32 pb-20 md:pb-32">
 
       {/* ── Page header ──────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-6 md:px-10 mb-20">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 mb-10 md:mb-20">
         <FadeInSection>
-          <p className="font-body text-[10px] tracking-widest3 uppercase text-secondary mb-4">
+          <p className="font-body text-[9px] md:text-[10px] tracking-widest3 uppercase text-secondary mb-2.5 md:mb-4">
             The Gallery
           </p>
-          <h1 className="font-heading font-light text-[2.8rem] md:text-6xl leading-none">
+          <h1 className="font-heading font-light text-[52px] md:text-6xl leading-none">
             About
           </h1>
         </FadeInSection>
@@ -24,9 +24,9 @@ export default function AboutPage() {
 
       {/* ── Pull quote ───────────────────────────────────────── */}
       <FadeInSection>
-        <div className="border-y border-border py-16 md:py-20 mb-24">
-          <div className="max-w-4xl mx-auto px-6 md:px-10">
-            <blockquote className="font-heading italic font-light text-[1.7rem] md:text-[2.4rem] leading-[1.35] text-ink/75 text-center">
+        <div className="border-y border-border py-10 md:py-20 mb-12 md:mb-24">
+          <div className="max-w-4xl mx-auto px-7 md:px-10">
+            <blockquote className="font-heading italic font-light text-[22px] md:text-[2.4rem] leading-[1.4] md:leading-[1.35] text-ink/75 text-center md:text-center">
               &ldquo;Each work in the collection has been selected for its artistic quality,
               historical significance, and the story it carries across centuries.&rdquo;
             </blockquote>

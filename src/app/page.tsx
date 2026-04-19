@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import FadeInSection from "@/components/FadeInSection";
+import MobileHomeHero from "@/components/MobileHomeHero";
 
 export const dynamic = "force-dynamic";
 
@@ -23,11 +24,27 @@ export default async function HomePage() {
     take: 3,
   });
 
+  // Pick a single hero painting for the mobile full-bleed hero.
+  // Prefer the 3rd featured work (matches the design spec — "The Sentinel"),
+  // fall back gracefully.
+  const heroPainting = featured[2] ?? featured[0];
+
   return (
     <>
-      {/* ── Hero ────────────────────────────────────────────── */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/* MOBILE HERO — full-bleed painting with parallax         */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      {heroPainting && (
+        <MobileHomeHero
+          imageUrl={heroPainting.imageUrl}
+          alt={heroPainting.title}
+        />
+      )}
 
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/* DESKTOP HERO — centered cream hero (unchanged)           */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      <section className="hidden md:flex relative min-h-screen flex-col items-center justify-center text-center px-6 overflow-hidden">
         {/* Subtle texture overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,_#f0ebe3_0%,_#faf8f4_70%)] pointer-events-none" />
 
@@ -54,8 +71,6 @@ export default async function HomePage() {
             </Link>
           </div>
         </div>
-
-
       </section>
 
       {/* ── Marquee strip ────────────────────────────────────── */}
@@ -76,8 +91,66 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* ── Featured paintings ───────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-6 md:px-10 pt-28 pb-32">
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/* FEATURED WORKS — mobile horizontal scroll / desktop grid */}
+      {/* ═══════════════════════════════════════════════════════ */}
+
+      {/* Mobile: horizontal-scroll strip */}
+      <section className="md:hidden pt-14 pb-16">
+        <FadeInSection>
+          <div className="flex items-end justify-between px-6 mb-7">
+            <h2 className="font-heading font-light text-[36px] leading-[1.05]">
+              Selected<br /><em className="italic">Works</em>
+            </h2>
+            <Link
+              href="/gallery"
+              className="font-body text-[9px] tracking-widest2 uppercase text-secondary border-b border-border pb-0.5"
+            >
+              View All →
+            </Link>
+          </div>
+        </FadeInSection>
+
+        <div className="flex gap-3 overflow-x-auto no-scrollbar px-6 pt-1 pb-1">
+          {featured.map((painting, i) => (
+            <FadeInSection key={painting.id} delay={i * 80}>
+              <Link
+                href={`/gallery/${painting.slug}`}
+                className="block shrink-0 w-[195px]"
+              >
+                <div className="aspect-[3/4] relative overflow-hidden bg-ink/5">
+                  <Image
+                    src={painting.imageUrl}
+                    alt={painting.title}
+                    fill
+                    className="object-cover"
+                    sizes="195px"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-ink/10 to-transparent pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <p className="font-heading text-[17px] font-light leading-tight text-cream">
+                      {painting.title}
+                    </p>
+                    <span className="inline-block mt-1.5 font-body text-[9px] tracking-widest2 uppercase text-cream/55">
+                      {painting.artist} · {painting.year}
+                    </span>
+                  </div>
+                  {painting.sold && (
+                    <div className="absolute top-3 left-3 font-body text-[8px] tracking-widest2 uppercase bg-ink/80 text-cream/70 px-2 py-1">
+                      Sold
+                    </div>
+                  )}
+                </div>
+              </Link>
+            </FadeInSection>
+          ))}
+          {/* trailing spacer so last card has breathing room when scrolled */}
+          <div className="shrink-0 w-2" aria-hidden />
+        </div>
+      </section>
+
+      {/* Desktop: grid layout (unchanged) */}
+      <section className="hidden md:block max-w-7xl mx-auto px-6 md:px-10 pt-28 pb-32">
         <FadeInSection>
           <div className="flex items-end justify-between mb-16">
             <h2 className="font-heading font-light text-[2.4rem] md:text-5xl leading-tight">
@@ -104,7 +177,6 @@ export default async function HomePage() {
                     className="object-cover scale-100 group-hover:scale-[1.04] transition-transform duration-700 ease-out"
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
-                  {/* Hover overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-ink/65 via-ink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-3 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-350 ease-out">
                     <p className="font-heading text-xl font-light text-cream leading-snug">
@@ -127,20 +199,35 @@ export default async function HomePage() {
             </FadeInSection>
           ))}
         </div>
-
-        <FadeInSection className="text-center mt-16 md:hidden">
-          <Link
-            href="/gallery"
-            className="link-arrow font-body text-[10px] tracking-widest2 uppercase text-secondary hover:text-accent transition-colors duration-200 border-b border-border pb-0.5"
-          >
-            View All Works
-          </Link>
-        </FadeInSection>
       </section>
 
-      {/* ── About blurb ──────────────────────────────────────── */}
+      {/* ═══════════════════════════════════════════════════════ */}
+      {/* ABOUT BLURB — ink section                                */}
+      {/* ═══════════════════════════════════════════════════════ */}
       <section className="bg-ink text-cream">
-        <div className="max-w-5xl mx-auto px-6 md:px-10 py-28 md:py-36">
+        {/* Mobile: single column */}
+        <div className="md:hidden px-7 pt-14 pb-20">
+          <FadeInSection>
+            <p className="font-body text-[9px] tracking-widest2 uppercase text-cream/25 mb-4">
+              The Collection
+            </p>
+            <h2 className="font-heading font-light text-[34px] leading-[1.15] text-cream mb-5">
+              Works chosen for<br /><em className="italic">rarity and merit</em>
+            </h2>
+            <p className="font-body font-light text-[14px] text-cream/50 leading-[1.9] mb-7">
+              Each work in the collection has been selected for its artistic quality, historical significance, and the story it carries across centuries.
+            </p>
+            <Link
+              href="/about"
+              className="inline-block font-body text-[9px] tracking-widest2 uppercase text-cream/40 border-b border-cream/15 pb-0.5"
+            >
+              About the Gallery →
+            </Link>
+          </FadeInSection>
+        </div>
+
+        {/* Desktop: two-column (unchanged) */}
+        <div className="hidden md:block max-w-5xl mx-auto px-6 md:px-10 py-28 md:py-36">
           <FadeInSection>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
               <div>

@@ -46,6 +46,16 @@ h1, h2, h3, h4, h5, h6 {
   100% { transform: translateX(-50%); }
 }
 
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.25; transform: scaleY(1); }
+  50%      { opacity: 0.5;  transform: scaleY(0.6) translateY(8px); }
+}
+
+@keyframes detailReveal {
+  from { transform: scale(1.04); opacity: 0.6; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
 /* ─── Animation utilities ────────────────────────────────── */
 .anim-nav {
   animation: fadeInDown 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -81,6 +91,14 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ─── No scrollbar (for horizontal scroll strips) ────────── */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* ─── Scroll pulse (mobile hero indicator) ───────────────── */
+.anim-scroll-pulse { animation: scrollPulse 2s ease-in-out infinite; }
+.anim-detail-reveal { animation: detailReveal 700ms cubic-bezier(0.16,1,0.3,1) both; }
 
 /* ─── Misc ───────────────────────────────────────────────── */
 .link-arrow::after {
