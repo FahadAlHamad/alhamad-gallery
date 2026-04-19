@@ -16,7 +16,7 @@ export default function Footer() {
               alt="Alhamad Gallery"
               width={120}
               height={120}
-              className="object-contain"
+              className="object-contain invert opacity-70"
             />
           </Link>
 

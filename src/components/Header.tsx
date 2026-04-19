@@ -47,9 +47,10 @@ export default function Header() {
         className={`
           anim-nav fixed top-0 left-0 right-0 z-50
           transition-all duration-500
+          bg-cream/85 backdrop-blur-md border-b border-border/50
           ${scrolled
-            ? "bg-cream/90 backdrop-blur-md border-b border-border/70 shadow-[0_1px_0_0_rgba(201,196,188,0.5)]"
-            : "bg-cream/70 backdrop-blur-sm border-b border-border/40"
+            ? "md:bg-cream/90 md:backdrop-blur-md md:border-border/70 md:shadow-[0_1px_0_0_rgba(201,196,188,0.5)]"
+            : "md:bg-cream/70 md:backdrop-blur-sm md:border-border/40"
           }
         `}
       >
